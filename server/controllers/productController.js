@@ -5,6 +5,8 @@ const ApiFeatures = require("../utils/apiFeatures");
 
 //create product --Admin
 exports.createProduct = catchAsyncError(async (req, res, next) => {
+  req.body.user = req.user.id;
+
   const product = await productModels.create(req.body);
   res.status(200).json({
     success: true,
@@ -27,7 +29,6 @@ exports.getAllProducts = catchAsyncError(async (req, res) => {
   });
 });
 
-
 //update product --Admin
 exports.updateProducts = catchAsyncError(async (req, res, next) => {
   let product = await productModels.findById(req.params.id);
@@ -45,7 +46,6 @@ exports.updateProducts = catchAsyncError(async (req, res, next) => {
     product,
   });
 });
-
 
 //delete product
 exports.deleteproducts = catchAsyncError(async (req, res, next) => {
