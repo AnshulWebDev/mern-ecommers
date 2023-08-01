@@ -1,7 +1,6 @@
 const ErrorHandler = require("../utils/errorHandle");
 const catchAsyncError = require("../middleware/catchAsyncError");
 const User = require("../models/userModel");
-const Product = require("../models/productModels");
 const sendToken = require("../utils/jwtToken");
 const sendEmail = require("../utils/sendEmail");
 const crypto = require("crypto");
@@ -244,47 +243,6 @@ exports.deleteUser = catchAsyncError(async (req, res, next) => {
   res.status(200).json({
     success: true,
     message: "user deleted Successfully",
-  });
-});
-
-//create new review and update the review
-exports.createNewReviewOrUpdate = catchAsyncError(async (req, res, next) => {
-  const { rating, comment, productId } = req.body;
-
-  const review = {
-    user: req.user._id,
-    name: req.user.name,
-    rating: Number(rating),
-    comment,
-  };
-
-  const product = await Product.findById(productId);
-
-  const isReviewed = product.reviews.find(
-    (rev) => rev.user.toString() === req.user._id.toString()
-  );
-
-  if (isReviewed) {
-    product.reviews.forEach((rev) => {
-      if (rev.user.toString() === req.user._id.toString())
-        (rev.rating = rating), (rev.comment = comment);
-    });
-  } else {
-    product.reviews.push(review);
-    product.numberOfReviews = product.reviews.length;
-  }
-
-  let avg = 0;
-  product.reviews.forEach((rev) => {
-    avg += rev.rating;
-  });
-
-  product.ratings = avg / product.reviews.length;
-
-  await product.save({ validateBeforeSave: false });
-
-  res.status(200).json({
-    success: true,
   });
 });
 
