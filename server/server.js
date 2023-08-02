@@ -20,7 +20,14 @@ const corsOptions = {
   origin: '*',
 };
 
-app.use(cors(corsOptions));
+// CORS middleware
+app.use(
+  cors({
+    origin: "*",
+    credentials: true, // Enable CORS credentials (cookies)
+  })
+);
+app.use(cookieParser());
 
 //unhandle promise rejection
 process.on("unhandledRejection", (err) => {
