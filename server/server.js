@@ -9,7 +9,6 @@ process.on("uncaughtException", (err) => {
   process.exit(1);
 });
 
-
 //connecting database
 connectDatabase();
 const server = app.listen(process.env.PORT, () => {
@@ -17,7 +16,7 @@ const server = app.listen(process.env.PORT, () => {
 });
 // Allow all origins (*) during development. For production, replace '*' with your production domain.
 const corsOptions = {
-  origin: '*',
+  origin: "*",
 };
 
 // CORS middleware
@@ -27,7 +26,6 @@ app.use(
     credentials: true, // Enable CORS credentials (cookies)
   })
 );
-app.use(cookieParser());
 
 //unhandle promise rejection
 process.on("unhandledRejection", (err) => {
