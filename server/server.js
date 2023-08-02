@@ -1,7 +1,7 @@
 const app = require("./app");
 require("dotenv").config();
 const connectDatabase = require("./config/database");
-
+const cors = require("cors");
 // Handling Uncaught Exception
 process.on("uncaughtException", (err) => {
   console.log(`Error: ${err.message}`);
@@ -15,6 +15,12 @@ connectDatabase();
 const server = app.listen(process.env.PORT, () => {
   console.log(`Server is started on PORT : ${process.env.PORT}`);
 });
+// Allow all origins (*) during development. For production, replace '*' with your production domain.
+const corsOptions = {
+  origin: '*',
+};
+
+app.use(cors(corsOptions));
 
 //unhandle promise rejection
 process.on("unhandledRejection", (err) => {
